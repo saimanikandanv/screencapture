@@ -201,9 +201,6 @@ public class ScreenCapture {
 		File[] files = createFolder.listFiles();	
 		paragraph=document.createParagraph();
 		run = paragraph.createRun();
-		XWPFTable table    = document.createTable(1, 1);
-		XWPFTableRow tableRowOne = table.getRow(0);
-		tableRowOne.getCell(0).setParagraph(paragraph);
 		int picformat=org.apache.poi.xwpf.usermodel.Document.PICTURE_TYPE_PNG;
 		for (File file : files)
 		{
