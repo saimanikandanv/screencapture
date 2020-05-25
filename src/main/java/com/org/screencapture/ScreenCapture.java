@@ -106,7 +106,7 @@ public class ScreenCapture {
 			public void actionPerformed(ActionEvent e) {
 				try 
 				{
-//					createPDFDoc();
+					createPDFDoc();
 					createWordDoc();
 					fileaction();
 				} 
