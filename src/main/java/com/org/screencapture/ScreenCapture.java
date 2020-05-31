@@ -9,13 +9,15 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.awt.event.ActionEvent;
@@ -90,7 +92,8 @@ public class ScreenCapture {
 		frmScreencapture.setBounds(100, 100, 513, 198);
 		frmScreencapture.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmScreencapture.setResizable(false);
-
+		frmScreencapture.setFocusTraversalKeysEnabled(false);
+		
 		play = new JButton("");
 		play.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -119,14 +122,35 @@ public class ScreenCapture {
 		stop.setIcon(new ImageIcon(ScreenCapture.class.getResource("/com/org/screencapture/stop.png")));
 
 		capture = new JButton("");
-		capture.setEnabled(false);
+		capture.setEnabled(false); 
+		capture.setIcon(new ImageIcon(ScreenCapture.class.getResource("/com/org/screencapture/capture.png")));
+		capture.addKeyListener(new KeyAdapter() {
+			
+			@Override
+			public void keyTyped(KeyEvent k) {	
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent k) {
+				// TODO Auto-generated method stub
+				if(k.isControlDown() && k.getKeyChar()==k.VK_A) {				
+					capture.doClick();
+				}
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent k) {
+				// TODO Auto-generated method stub
+				if(k.isControlDown() && k.getKeyChar()==k.VK_A) {
+					capture();
+				}			
+			}
+		});
 		capture.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				capture();
 			}
 		});
-		capture.setIcon(new ImageIcon(ScreenCapture.class.getResource("/com/org/screencapture/capture.png")));
-
 
 		GroupLayout groupLayout = new GroupLayout(frmScreencapture.getContentPane());
 		groupLayout.setHorizontalGroup(
@@ -163,7 +187,8 @@ public class ScreenCapture {
 		foldername="/Screenshots_"+ new SimpleDateFormat("yyyyMMdd-HHmmss").format(new Date());
 		createFolder= new File(foldername);
 		createFolder.mkdir();
-		capture.setEnabled(true);
+		capture.setEnabled(true); 
+		frmScreencapture.setFocusable(true);
 	}
 	private void capture()
 	{
@@ -181,6 +206,7 @@ public class ScreenCapture {
 				File createImg=new File(foldername +"/" + fileSuffix + ".png");
 				ImageIO.write(bufferedImage,"png",createImg);
 				frmScreencapture.setVisible(true);
+				frmScreencapture.setFocusable(true);
 			}
 			catch(Exception e)
 			{
@@ -267,5 +293,4 @@ public class ScreenCapture {
 			frmScreencapture.dispose();
 		}
 	}
-
 }
