@@ -30,6 +30,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.Units;
+import org.apache.poi.xwpf.usermodel.BreakType;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
@@ -124,28 +125,25 @@ public class ScreenCapture {
 		capture = new JButton("");
 		capture.setEnabled(false); 
 		capture.setIcon(new ImageIcon(ScreenCapture.class.getResource("/com/org/screencapture/capture.png")));
-		capture.addKeyListener(new KeyAdapter() {
-			
-			@Override
-			public void keyTyped(KeyEvent k) {	
-			}
-			
-			@Override
-			public void keyReleased(KeyEvent k) {
-				// TODO Auto-generated method stub
-				if(k.isControlDown() && k.getKeyChar()==k.VK_A) {				
-					capture.doClick();
-				}
-			}
-			
-			@Override
-			public void keyPressed(KeyEvent k) {
-				// TODO Auto-generated method stub
-				if(k.isControlDown() && k.getKeyChar()==k.VK_A) {
-					capture();
-				}			
-			}
-		});
+//		frmScreencapture.addKeyListener(new KeyAdapter() {
+//			
+//			@Override
+//			public void keyTyped(KeyEvent k) {	
+//			}
+//			
+//			@Override
+//			public void keyReleased(KeyEvent k) {
+//				// TODO Auto-generated method stub
+//				if(k.isControlDown() && k.getKeyChar()==k.VK_A) {				
+//					capture();
+//				}
+//			}
+//			
+//			@Override
+//			public void keyPressed(KeyEvent k) {
+//				// TODO Auto-generated method stub	
+//			}
+//		});
 		capture.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				capture();
@@ -233,7 +231,8 @@ public class ScreenCapture {
 			if(FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("png"))
 			{
 				FileInputStream fis=new FileInputStream(file);
-				run.addPicture(fis, picformat, file.getName(), Units.toEMU(470), Units.toEMU(350));	
+				run.addPicture(fis, picformat, file.getName(), Units.toEMU(470), Units.toEMU(300));	
+				run.addBreak(BreakType.TEXT_WRAPPING);
 				fis.close();
 			}
 		}
