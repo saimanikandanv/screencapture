@@ -125,25 +125,6 @@ public class ScreenCapture {
 		capture = new JButton("");
 		capture.setEnabled(false); 
 		capture.setIcon(new ImageIcon(ScreenCapture.class.getResource("/com/org/screencapture/capture.png")));
-//		frmScreencapture.addKeyListener(new KeyAdapter() {
-//			
-//			@Override
-//			public void keyTyped(KeyEvent k) {	
-//			}
-//			
-//			@Override
-//			public void keyReleased(KeyEvent k) {
-//				// TODO Auto-generated method stub
-//				if(k.isControlDown() && k.getKeyChar()==k.VK_A) {				
-//					capture();
-//				}
-//			}
-//			
-//			@Override
-//			public void keyPressed(KeyEvent k) {
-//				// TODO Auto-generated method stub	
-//			}
-//		});
 		capture.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				capture();
@@ -182,11 +163,14 @@ public class ScreenCapture {
 
 	private void start()
 	{
-		foldername="/Screenshots_"+ new SimpleDateFormat("yyyyMMdd-HHmmss").format(new Date());
+		File path = new File(ScreenCapture.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+		JOptionPane.showMessageDialog(null, "Jar path"+path.toString());
+		foldername=path+"/Screenshots_"+ new SimpleDateFormat("yyyyMMdd-HHmmss").format(new Date());
+		JOptionPane.showMessageDialog(null, "folder path"+foldername);
 		createFolder= new File(foldername);
 		createFolder.mkdir();
 		capture.setEnabled(true); 
-		frmScreencapture.setFocusable(true);
+		frmScreencapture.setAlwaysOnTop(true);
 	}
 	private void capture()
 	{
@@ -204,7 +188,6 @@ public class ScreenCapture {
 				File createImg=new File(foldername +"/" + fileSuffix + ".png");
 				ImageIO.write(bufferedImage,"png",createImg);
 				frmScreencapture.setVisible(true);
-				frmScreencapture.setFocusable(true);
 			}
 			catch(Exception e)
 			{
