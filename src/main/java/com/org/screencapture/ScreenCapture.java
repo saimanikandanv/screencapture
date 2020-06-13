@@ -163,10 +163,7 @@ public class ScreenCapture {
 
 	private void start()
 	{
-		File path = new File(ScreenCapture.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-		JOptionPane.showMessageDialog(null, "Jar path"+path.toString());
-		foldername=path+"/Screenshots_"+ new SimpleDateFormat("yyyyMMdd-HHmmss").format(new Date());
-		JOptionPane.showMessageDialog(null, "folder path"+foldername);
+		foldername="/Screenshots_"+ new SimpleDateFormat("yyyyMMdd-HHmmss").format(new Date());
 		createFolder= new File(foldername);
 		createFolder.mkdir();
 		capture.setEnabled(true); 
