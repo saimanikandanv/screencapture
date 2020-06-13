@@ -5,7 +5,7 @@
 
 ## Installation
 
-- **Make sure you have the Java Run time environment installed in your machine version 1.8 or more**
+- Make sure you have the **Java Run time environment installed in your machine version 1.8 or more**
 - Download the latest version of the screen capture utility in [Github Release Page](https://github.com/saimanikandanv/screencapture/releases)
 
 
