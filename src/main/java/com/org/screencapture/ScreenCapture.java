@@ -166,6 +166,7 @@ public class ScreenCapture {
 		foldername="/Screenshots_"+ new SimpleDateFormat("yyyyMMdd-HHmmss").format(new Date());
 		createFolder= new File(foldername);
 		createFolder.mkdir();
+		play.setEnabled(false);
 		capture.setEnabled(true); 
 		frmScreencapture.setAlwaysOnTop(true);
 	}
