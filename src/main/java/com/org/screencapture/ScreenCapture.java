@@ -9,7 +9,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
@@ -34,9 +33,6 @@ import org.apache.poi.xwpf.usermodel.BreakType;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
-import org.apache.poi.xwpf.usermodel.XWPFTable;
-import org.apache.poi.xwpf.usermodel.XWPFTableRow;
-
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -49,7 +45,7 @@ import com.itextpdf.layout.element.Table;
 
 import java.awt.Color;
 
-public class ScreenCapture {
+public class ScreenCapture{
 
 	private JFrame frmScreencapture;
 	private JButton play,stop,capture;
@@ -82,6 +78,7 @@ public class ScreenCapture {
 	 */
 	public ScreenCapture() {
 		initialize();
+
 	}
 
 	/**
@@ -93,8 +90,33 @@ public class ScreenCapture {
 		frmScreencapture.setBounds(100, 100, 513, 198);
 		frmScreencapture.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmScreencapture.setResizable(false);
+		frmScreencapture.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				if(e.getKeyCode()==KeyEvent.VK_PRINTSCREEN)
+				{
+					capture();
+				}
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		frmScreencapture.setFocusable(true);
 		frmScreencapture.setFocusTraversalKeysEnabled(false);
-		
+	
 		play = new JButton("");
 		play.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -168,7 +190,8 @@ public class ScreenCapture {
 		createFolder.mkdir();
 		play.setEnabled(false);
 		capture.setEnabled(true); 
-		frmScreencapture.setAlwaysOnTop(true);
+		frmScreencapture.setAlwaysOnTop(true);	
+		JOptionPane.showMessageDialog(null, "Use print screen key to capture screens","Screen Capture",JOptionPane.INFORMATION_MESSAGE);
 	}
 	private void capture()
 	{
