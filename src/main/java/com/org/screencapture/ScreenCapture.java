@@ -93,7 +93,7 @@ public class ScreenCapture{
 		frmScreencapture = new JFrame();
 		frmScreencapture.setIconImage(Toolkit.getDefaultToolkit().getImage(ScreenCapture.class.getResource("/com/org/screencapture/code.png")));
 		frmScreencapture.setTitle("ScreenCapture");
-		frmScreencapture.setBounds(100, 100, 353, 149);
+		frmScreencapture.setBounds(5, 30, 353, 149);
 		frmScreencapture.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmScreencapture.setResizable(false);
 		frmScreencapture.addKeyListener(new KeyListener() {
@@ -282,6 +282,7 @@ public class ScreenCapture{
 	}
 	private void fileaction()
 	{
+		frmScreencapture.setVisible(false);
 		int option=JOptionPane.showConfirmDialog(null, "Do you want to keep raw image files captured?","Keep Files Warning",JOptionPane.YES_NO_OPTION);
 		if(option==JOptionPane.YES_OPTION)
 		{	
