@@ -199,7 +199,7 @@ public class ScreenCapture{
 		play.setEnabled(false);
 		capture.setEnabled(true); 
 		frmScreencapture.setAlwaysOnTop(true);	
-		JOptionPane.showMessageDialog(null, "Use print screen key to capture screens","Screen Capture",JOptionPane.INFORMATION_MESSAGE);
+//		JOptionPane.showMessageDialog(null, "Use print screen key to capture screens","Screen Capture",JOptionPane.INFORMATION_MESSAGE);
 	}
 	private void capture()
 	{
