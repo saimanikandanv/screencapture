@@ -300,6 +300,7 @@ public class ScreenCapture{
 					delfile.delete();
 				}					
 			}
+			createFolder.delete();
 			JOptionPane.showMessageDialog(null, "Process Completed and Output file saved as PDF and Doc with raw Image files deleted");
 			frmScreencapture.dispose();
 		}
