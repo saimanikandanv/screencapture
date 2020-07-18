@@ -60,6 +60,7 @@ public class ScreenCapture{
 	private BufferedImage bufferedImage;
 	private String foldername=null;
 	private String filename=null;
+	private Boolean folderclearflag=true;
 
 	/**
 	 * Launch the application.
@@ -92,18 +93,18 @@ public class ScreenCapture{
 	private void initialize() {
 		frmScreencapture = new JFrame();
 		frmScreencapture.setIconImage(Toolkit.getDefaultToolkit().getImage(ScreenCapture.class.getResource("/com/org/screencapture/code.png")));
-		frmScreencapture.setTitle("ScreenCapture");
+		frmScreencapture.setTitle("Screen Capture");
 		frmScreencapture.setBounds(5, 30, 353, 149);
 		frmScreencapture.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmScreencapture.setResizable(false);
 		frmScreencapture.addKeyListener(new KeyListener() {
-			
+
 			@Override
 			public void keyTyped(KeyEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void keyReleased(KeyEvent e) {
 				// TODO Auto-generated method stub
@@ -111,19 +112,20 @@ public class ScreenCapture{
 				{
 					capture();
 				}
-				
+
 			}
-			
+
 			@Override
 			public void keyPressed(KeyEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 		frmScreencapture.setFocusable(true);
 		frmScreencapture.setFocusTraversalKeysEnabled(false);
-	
+
 		play = new JButton("");
+		play.setToolTipText("Start the App - Creates a folder to store captured screenshots");
 		play.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				start();
@@ -132,6 +134,7 @@ public class ScreenCapture{
 		play.setIcon(new ImageIcon(ScreenCapture.class.getResource("/com/org/screencapture/google-play.png")));
 
 		stop = new JButton("");
+		stop.setToolTipText("Save the captured screenshots in word and pdf document");
 		stop.setEnabled(false);
 		stop.setForeground(Color.BLACK);
 		stop.addActionListener(new ActionListener() {
@@ -145,9 +148,16 @@ public class ScreenCapture{
 						File savefile=filechooser.getSelectedFile();
 						filename=savefile.getAbsolutePath();
 					}
+					else
+					{
+						String docname = "Screenshot-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+						filename=foldername +"/"+ docname;
+						folderclearflag=false;
+						JOptionPane.showMessageDialog(null, "User clicked cancel output word and PDF files will be stored in the root directory of application","Save Warning",JOptionPane.WARNING_MESSAGE);
+					}
 					createPDFDoc(filename);
 					createWordDoc(filename);
-					fileaction();
+					fileaction(folderclearflag);
 				} 
 				catch (Exception e1) 
 				{
@@ -158,6 +168,7 @@ public class ScreenCapture{
 		stop.setIcon(new ImageIcon(ScreenCapture.class.getResource("/com/org/screencapture/save.png")));
 
 		capture = new JButton("");
+		capture.setToolTipText("Capture Screenshots");
 		capture.setEnabled(false); 
 		capture.setIcon(new ImageIcon(ScreenCapture.class.getResource("/com/org/screencapture/video.png")));
 		capture.addActionListener(new ActionListener() {
@@ -168,26 +179,26 @@ public class ScreenCapture{
 
 		GroupLayout groupLayout = new GroupLayout(frmScreencapture.getContentPane());
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
+				groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(8)
-					.addComponent(play, GroupLayout.PREFERRED_SIZE, 99, GroupLayout.PREFERRED_SIZE)
-					.addGap(10)
-					.addComponent(stop, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(capture, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
-					.addGap(27))
-		);
+						.addGap(8)
+						.addComponent(play, GroupLayout.PREFERRED_SIZE, 99, GroupLayout.PREFERRED_SIZE)
+						.addGap(10)
+						.addComponent(stop, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addComponent(capture, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
+						.addGap(27))
+				);
 		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
+				groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(capture, GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
-						.addComponent(stop, GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
-						.addComponent(play, GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE))
-					.addContainerGap())
-		);
+						.addContainerGap()
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(capture, GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
+								.addComponent(stop, GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
+								.addComponent(play, GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE))
+						.addContainerGap())
+				);
 		frmScreencapture.getContentPane().setLayout(groupLayout);
 	}
 
@@ -199,7 +210,6 @@ public class ScreenCapture{
 		play.setEnabled(false);
 		capture.setEnabled(true); 
 		frmScreencapture.setAlwaysOnTop(true);	
-//		JOptionPane.showMessageDialog(null, "Use print screen key to capture screens","Screen Capture",JOptionPane.INFORMATION_MESSAGE);
 	}
 	private void capture()
 	{
@@ -232,7 +242,7 @@ public class ScreenCapture{
 	private void createWordDoc(String folder) throws IOException, InvalidFormatException
 	{
 		document = new XWPFDocument(); 		
-//		String docname = "Screenshot-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		//		String docname = "Screenshot-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 		FileOutputStream out = new FileOutputStream(new File(folder + ".docx"));
 		File[] files = createFolder.listFiles();	
 		paragraph=document.createParagraph();
@@ -254,7 +264,7 @@ public class ScreenCapture{
 	}
 	private void createPDFDoc(String filename) throws IOException
 	{
-//		String docname = "Screenshot-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		//		String docname = "Screenshot-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 		PdfWriter writer=new PdfWriter(filename + ".pdf");
 		PdfDocument pdfdoc=new PdfDocument(writer);
 		pdfdoc.addNewPage();
@@ -280,7 +290,7 @@ public class ScreenCapture{
 		pdfdocument.close(); 	
 		writer.close();
 	}
-	private void fileaction()
+	private void fileaction(Boolean folderflag)
 	{
 		frmScreencapture.setVisible(false);
 		int option=JOptionPane.showConfirmDialog(null, "Do you want to keep raw image files captured?","Keep Files Warning",JOptionPane.YES_NO_OPTION);
@@ -301,7 +311,10 @@ public class ScreenCapture{
 					delfile.delete();
 				}					
 			}
-			createFolder.delete();
+			if(folderflag)
+			{
+				createFolder.delete();
+			}
 			JOptionPane.showMessageDialog(null, "Process Completed and Output file saved as PDF and Doc with raw Image files deleted");
 			frmScreencapture.dispose();
 		}
