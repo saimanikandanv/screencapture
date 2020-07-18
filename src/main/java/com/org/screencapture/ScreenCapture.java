@@ -8,6 +8,8 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -25,6 +27,7 @@ import javax.imageio.ImageIO;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.UIManager;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -56,6 +59,7 @@ public class ScreenCapture{
 	private XWPFRun run;
 	private BufferedImage bufferedImage;
 	private String foldername=null;
+	private String filename=null;
 
 	/**
 	 * Launch the application.
@@ -64,6 +68,7 @@ public class ScreenCapture{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 					ScreenCapture window = new ScreenCapture();
 					window.frmScreencapture.setVisible(true);
 				} catch (Exception e) {
@@ -86,8 +91,9 @@ public class ScreenCapture{
 	 */
 	private void initialize() {
 		frmScreencapture = new JFrame();
+		frmScreencapture.setIconImage(Toolkit.getDefaultToolkit().getImage(ScreenCapture.class.getResource("/com/org/screencapture/code.png")));
 		frmScreencapture.setTitle("ScreenCapture");
-		frmScreencapture.setBounds(100, 100, 513, 198);
+		frmScreencapture.setBounds(100, 100, 353, 149);
 		frmScreencapture.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmScreencapture.setResizable(false);
 		frmScreencapture.addKeyListener(new KeyListener() {
@@ -123,7 +129,7 @@ public class ScreenCapture{
 				start();
 			}
 		});
-		play.setIcon(new ImageIcon(ScreenCapture.class.getResource("/com/org/screencapture/play.png")));
+		play.setIcon(new ImageIcon(ScreenCapture.class.getResource("/com/org/screencapture/google-play.png")));
 
 		stop = new JButton("");
 		stop.setEnabled(false);
@@ -132,8 +138,15 @@ public class ScreenCapture{
 			public void actionPerformed(ActionEvent e) {
 				try 
 				{
-					createPDFDoc();
-					createWordDoc();
+					JFileChooser filechooser=new JFileChooser();
+					int option=filechooser.showSaveDialog(frmScreencapture);
+					if(option==JFileChooser.APPROVE_OPTION)
+					{
+						File savefile=filechooser.getSelectedFile();
+						filename=savefile.getAbsolutePath();
+					}
+					createPDFDoc(filename);
+					createWordDoc(filename);
 					fileaction();
 				} 
 				catch (Exception e1) 
@@ -142,11 +155,11 @@ public class ScreenCapture{
 				}
 			}
 		});
-		stop.setIcon(new ImageIcon(ScreenCapture.class.getResource("/com/org/screencapture/stop.png")));
+		stop.setIcon(new ImageIcon(ScreenCapture.class.getResource("/com/org/screencapture/save.png")));
 
 		capture = new JButton("");
 		capture.setEnabled(false); 
-		capture.setIcon(new ImageIcon(ScreenCapture.class.getResource("/com/org/screencapture/capture.png")));
+		capture.setIcon(new ImageIcon(ScreenCapture.class.getResource("/com/org/screencapture/video.png")));
 		capture.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				capture();
@@ -155,31 +168,26 @@ public class ScreenCapture{
 
 		GroupLayout groupLayout = new GroupLayout(frmScreencapture.getContentPane());
 		groupLayout.setHorizontalGroup(
-				groupLayout.createParallelGroup(Alignment.LEADING)
+			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-						.addGap(16)
-						.addComponent(play, GroupLayout.PREFERRED_SIZE, 149, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addComponent(stop, GroupLayout.PREFERRED_SIZE, 149, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addComponent(capture)
-						.addGap(34))
-				);
+					.addGap(8)
+					.addComponent(play, GroupLayout.PREFERRED_SIZE, 99, GroupLayout.PREFERRED_SIZE)
+					.addGap(10)
+					.addComponent(stop, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(capture, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
+					.addGap(27))
+		);
 		groupLayout.setVerticalGroup(
-				groupLayout.createParallelGroup(Alignment.LEADING)
+			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-										.addComponent(play, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addContainerGap())
-								.addGroup(groupLayout.createSequentialGroup()
-										.addComponent(stop, GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-										.addContainerGap())
-								.addGroup(groupLayout.createSequentialGroup()
-										.addComponent(capture, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addContainerGap())))
-				);
+					.addContainerGap()
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(capture, GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
+						.addComponent(stop, GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
+						.addComponent(play, GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE))
+					.addContainerGap())
+		);
 		frmScreencapture.getContentPane().setLayout(groupLayout);
 	}
 
@@ -221,11 +229,11 @@ public class ScreenCapture{
 		}
 
 	}
-	private void createWordDoc() throws IOException, InvalidFormatException
+	private void createWordDoc(String folder) throws IOException, InvalidFormatException
 	{
 		document = new XWPFDocument(); 		
-		String docname = "Screenshot-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-		FileOutputStream out = new FileOutputStream(new File(foldername +"/" + docname + ".docx"));
+//		String docname = "Screenshot-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		FileOutputStream out = new FileOutputStream(new File(folder + ".docx"));
 		File[] files = createFolder.listFiles();	
 		paragraph=document.createParagraph();
 		run = paragraph.createRun();
@@ -244,10 +252,10 @@ public class ScreenCapture{
 		out.close();
 		document.close();		
 	}
-	private void createPDFDoc() throws IOException
+	private void createPDFDoc(String filename) throws IOException
 	{
-		String docname = "Screenshot-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-		PdfWriter writer=new PdfWriter(foldername +"/"  + docname + ".pdf");
+//		String docname = "Screenshot-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		PdfWriter writer=new PdfWriter(filename + ".pdf");
 		PdfDocument pdfdoc=new PdfDocument(writer);
 		pdfdoc.addNewPage();
 		Document pdfdocument=new Document(pdfdoc);
