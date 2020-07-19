@@ -16,7 +16,6 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -104,7 +103,6 @@ public class ScreenCapture{
 				// TODO Auto-generated method stub
 
 			}
-
 			@Override
 			public void keyReleased(KeyEvent e) {
 				// TODO Auto-generated method stub
@@ -112,13 +110,10 @@ public class ScreenCapture{
 				{
 					capture();
 				}
-
 			}
-
 			@Override
 			public void keyPressed(KeyEvent e) {
 				// TODO Auto-generated method stub
-
 			}
 		});
 		frmScreencapture.setFocusable(true);
@@ -242,7 +237,7 @@ public class ScreenCapture{
 	private void createWordDoc(String folder) throws IOException, InvalidFormatException
 	{
 		document = new XWPFDocument(); 		
-		//		String docname = "Screenshot-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		//String docname = "Screenshot-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 		FileOutputStream out = new FileOutputStream(new File(folder + ".docx"));
 		File[] files = createFolder.listFiles();	
 		paragraph=document.createParagraph();
@@ -264,7 +259,7 @@ public class ScreenCapture{
 	}
 	private void createPDFDoc(String filename) throws IOException
 	{
-		//		String docname = "Screenshot-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		//String docname = "Screenshot-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 		PdfWriter writer=new PdfWriter(filename + ".pdf");
 		PdfDocument pdfdoc=new PdfDocument(writer);
 		pdfdoc.addNewPage();
@@ -293,30 +288,21 @@ public class ScreenCapture{
 	private void fileaction(Boolean folderflag)
 	{
 		frmScreencapture.setVisible(false);
-		int option=JOptionPane.showConfirmDialog(null, "Do you want to keep raw image files captured?","Keep Files Warning",JOptionPane.YES_NO_OPTION);
-		if(option==JOptionPane.YES_OPTION)
-		{	
-			JOptionPane.showMessageDialog(null, "Process Completed and Output file saved as PDF and Doc");
-			frmScreencapture.dispose();
-		}
-		else
+		File[] srcimage=createFolder.listFiles();
+		for(File imgfile:srcimage)
 		{
-			File[] srcimage=createFolder.listFiles();
-			for(File imgfile:srcimage)
+			if(FilenameUtils.getExtension(imgfile.getName()).equalsIgnoreCase("png"))
 			{
-				if(FilenameUtils.getExtension(imgfile.getName()).equalsIgnoreCase("png"))
-				{
-					String path=imgfile.getAbsolutePath();
-					File delfile=new File(path);
-					delfile.delete();
-				}					
-			}
-			if(folderflag)
-			{
-				createFolder.delete();
-			}
-			JOptionPane.showMessageDialog(null, "Process Completed and Output file saved as PDF and Doc with raw Image files deleted");
-			frmScreencapture.dispose();
+				String path=imgfile.getAbsolutePath();
+				File delfile=new File(path);
+				delfile.delete();
+			}					
 		}
+		if(folderflag)
+		{
+			createFolder.delete();
+		}
+		JOptionPane.showMessageDialog(null, "Process Completed and Output file saved as PDF and Doc");
+		frmScreencapture.dispose();
 	}
 }
