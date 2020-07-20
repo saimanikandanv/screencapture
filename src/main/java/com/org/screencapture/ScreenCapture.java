@@ -93,7 +93,7 @@ public class ScreenCapture{
 		frmScreencapture = new JFrame();
 		frmScreencapture.setIconImage(Toolkit.getDefaultToolkit().getImage(ScreenCapture.class.getResource("/com/org/screencapture/code.png")));
 		frmScreencapture.setTitle("Screen Capture");
-		frmScreencapture.setBounds(5, 30, 290, 129);
+		frmScreencapture.setBounds(5, 30, 295, 129);
 		frmScreencapture.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmScreencapture.setResizable(false);
 		frmScreencapture.addKeyListener(new KeyListener() {
