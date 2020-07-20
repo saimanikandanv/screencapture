@@ -93,7 +93,7 @@ public class ScreenCapture{
 		frmScreencapture = new JFrame();
 		frmScreencapture.setIconImage(Toolkit.getDefaultToolkit().getImage(ScreenCapture.class.getResource("/com/org/screencapture/code.png")));
 		frmScreencapture.setTitle("Screen Capture");
-		frmScreencapture.setBounds(5, 30, 353, 149);
+		frmScreencapture.setBounds(5, 30, 290, 129);
 		frmScreencapture.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmScreencapture.setResizable(false);
 		frmScreencapture.addKeyListener(new KeyListener() {
@@ -177,21 +177,21 @@ public class ScreenCapture{
 				groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 						.addGap(8)
-						.addComponent(play, GroupLayout.PREFERRED_SIZE, 99, GroupLayout.PREFERRED_SIZE)
+						.addComponent(play, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
 						.addGap(10)
-						.addComponent(stop, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+						.addComponent(stop, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
 						.addPreferredGap(ComponentPlacement.UNRELATED)
-						.addComponent(capture, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
-						.addGap(27))
+						.addComponent(capture, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
+						.addGap(24))
 				);
 		groupLayout.setVerticalGroup(
 				groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
+				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
 						.addContainerGap()
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(capture, GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
-								.addComponent(stop, GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
-								.addComponent(play, GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE))
+						.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+								.addComponent(capture,Alignment.LEADING, GroupLayout.DEFAULT_SIZE,GroupLayout.DEFAULT_SIZE , Short.MAX_VALUE)
+								.addComponent(stop,Alignment.LEADING, GroupLayout.DEFAULT_SIZE,GroupLayout.DEFAULT_SIZE , Short.MAX_VALUE)
+								.addComponent(play,Alignment.LEADING ,GroupLayout.DEFAULT_SIZE,GroupLayout.DEFAULT_SIZE , Short.MAX_VALUE))
 						.addContainerGap())
 				);
 		frmScreencapture.getContentPane().setLayout(groupLayout);
